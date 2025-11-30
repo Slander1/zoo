@@ -1,23 +1,22 @@
 using System;
-using System.Collections.Generic;
 using Game.Animals.Behaviour.Collisions;
+using Game.Animals.Behaviour.Collisions.Controllers;
 using Game.Animals.Behaviour.Movers;
-using Game.Animals.Roles.MarkerInterfaces;
-using Game.Utility;
+using Game.Animals.StateInterfaces;
+using Game.ObjectOnSceneMarkers;
 using UnityEngine;
 
 namespace Game.Animals
 {
-    public abstract class AnimalBase : MonoBehaviour
+    public abstract class AnimalBase : InteractableObjectOnScene, IHaveCollisionController
     {
-        public Dictionary<Type, IRoleMarker> Roles = new();
+        public ICollisionController CollisionController { get; protected set; }
         
         public event Action<AnimalBase> Died;
         
         [SerializeField] protected AnimalView view;
         
         protected IMover Mover;
-        protected IAnimalCollisionBehaviour CollisionBehaviour;
         protected CollisionDefiner CollisionDefiner;
         
         #region === Unity Events ===
@@ -27,9 +26,16 @@ namespace Game.Animals
             CollisionDefiner = new CollisionDefiner();
             
             InitializeMover();
-            InitializeCollisionBehaviour();
-            InitializeInteractableControllersComponents();
+            InitializeCollisionController();
         }
+        
+        // public void Initialize(ICollisionBehaviourData data)
+        // {
+        //     // Регистрируем реакции
+        //     ReactedTo[typeof(IWall)] = ReactTo;
+        //     ReactedTo[typeof(PreyAnimal)]   = OnPreyReaction;
+        // }
+
 
         private void OnEnable()
         {
@@ -57,21 +63,18 @@ namespace Game.Animals
         
         private void OnViewCollisionEnter(Collision collision)
         {
-            CollisionBehaviour.OnCollision(collision);
+            CollisionDefiner.OnCollision(this, collision);
+            // CollisionBehaviour.OnCollision(collision);
         }
         
         protected abstract void InitializeMover();
-        protected abstract void InitializeCollisionBehaviour();
+        // protected abstract void InitializeCollisionBehaviour();
 
         public void Die()
         {
             Died?.Invoke(this);
-            Destroy(gameObject);
         }
-        
-        protected void InitializeInteractableControllersComponents()
-        {
-            InteractableControllersHelper.RegisterMarkerInterfaces(this, Roles);
-        }
+
+        protected abstract void InitializeCollisionController();
     }
 }

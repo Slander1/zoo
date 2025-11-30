@@ -1,34 +1,35 @@
-using Game.Animals.Behaviour.Collisions;
-using Game.Animals.Behaviour.Collisions.Data;
+using Game.Animals.Behaviour.Collisions.Controllers;
+using Game.Animals.Behaviour.Collisions.Controllers.Data;
 using Game.Animals.Behaviour.Movers;
 using Game.Animals.Behaviour.Movers.Data;
 using UnityEngine;
 
 namespace Game.Animals
 {
-    public abstract class GenericMovableAnimalBase<TMover, TMoverData, TCollisionBeh, TTCollisionBehData>: AnimalBase
+    public abstract class GenericMovableAnimalBase<TMover, TMoverData, TCollisionController, TCollisionData>
+        : AnimalBase
         where TMover : IGenericMover<TMoverData>, new()
         where TMoverData  : IMoverData
-        where TCollisionBeh : IAnimalCollisionBehaviour, new()
-        where TTCollisionBehData  : ICollisionBehaviourData
-    {
-        [SerializeField] private TMoverData data;
-        [SerializeField] private TTCollisionBehData collisionBehaviourData;
+        where TCollisionController : IGenericICollisionController<TCollisionData>, new()
+        where TCollisionData : ICollisionControllerData
+     {
+        [SerializeField] private TMoverData moverData;
+        [SerializeField] private TCollisionData collisionData;
         
         protected override void InitializeMover()
         {
             var genericMover = new TMover();
-            genericMover.Initialize(data);
+            genericMover.Initialize(moverData);
             Mover = genericMover;
-            data.Initialize(view, transform);
+            moverData.Initialize(view, transform);
         }
 
-        protected override void InitializeCollisionBehaviour()
+        protected override void InitializeCollisionController()
         {
-            var genericBeh = new TCollisionBeh();
-            genericBeh.Initialize(collisionBehaviourData);
-            collisionBehaviourData.Initialize(this, CollisionDefiner);
-            CollisionBehaviour = genericBeh;
+            var genericICollisionController = new TCollisionController();
+            genericICollisionController.Initialize(collisionData);
+            CollisionController = genericICollisionController;
+            collisionData.Initialize(OnBlockedByObstacle);
         }
-    }
+     }
 }

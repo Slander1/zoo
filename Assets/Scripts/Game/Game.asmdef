@@ -4,7 +4,8 @@
     "references": [
         "VContainer",
         "UniTask",
-        "CoreLogic"
+        "CoreLogic",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

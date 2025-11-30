@@ -1,22 +1,25 @@
 using System;
 using System.Collections.Generic;
-using Game.Animals.Events;
+using Game.Animals.EventHub;
+using Game.Providers;
+using UnityEngine;
 using VContainer.Unity;
+using Random = UnityEngine.Random;
 
 namespace Game.Animals.Pool
 {
-    public sealed class AnimalsPool : IStartable, IDisposable, IAnimalsHashSetProvider
+    public sealed class AnimalsPool : IStartable, IDisposable, IObjectPoolProvider
     {
-        public HashSet<AnimalBase> AnimalsOnField => _animalsOnField;
-        
-        private HashSet<AnimalBase> _animalsOnField = new();
-        private HashSet<AnimalBase> _animalsInObjectPool = new();
+        private readonly HashSet<AnimalBase> _animalsInObjectPool = new();
 
-        private readonly IAnimalsCreator _animalsCreator;
+        private readonly Transform _objectPoolParent;
+        private readonly IAnimalsEventHub _eventHub;
         
-        public AnimalsPool(IAnimalsCreator animalsCreator)
+        public AnimalsPool(IAnimalsEventHub eventHub)
         {
-            _animalsCreator = animalsCreator;
+            _objectPoolParent = new GameObject("ObjectPool").transform;
+            _objectPoolParent.position = new Vector3(0f, 50f, 0f);
+            _eventHub = eventHub;
         }
         
         void IStartable.Start()
@@ -24,19 +27,51 @@ namespace Game.Animals.Pool
             SubscribeOnEvents();
         }
         
-        private void SubscribeOnEvents()
+        public bool TryGetElemFromObjectPool(out AnimalBase animal)
         {
-            _animalsCreator.AnimalsCreated += OnAnimalsCreated;
-        }
+            animal = null;
+            if (_animalsInObjectPool.Count == 0) return false;
+            
+            var index = Random.Range(0, _animalsInObjectPool.Count);
+            var i = 0;
 
-        private void UnsubscribeFromEvents()
-        {
-            _animalsCreator.AnimalsCreated -= OnAnimalsCreated;
+            foreach (var objPoolAnimal in _animalsInObjectPool)
+            {
+                if (i == index)
+                {
+                    animal = objPoolAnimal;
+                }
+                i++;
+            }
+
+            if (animal == null)
+            {
+                return false;
+            }
+
+            animal.gameObject.SetActive(true);
+            _animalsInObjectPool.Remove(animal);
+            return true;
         }
         
-        private void OnAnimalsCreated(AnimalBase animal)
+        private void SubscribeOnEvents()
         {
-            _animalsOnField.Add(animal);
+            _eventHub.AnimalDied += AnimalOnDied;
+        }
+        
+        private void UnsubscribeFromEvents()
+        {
+            _eventHub.AnimalDied -= AnimalOnDied;
+        }
+        
+        private void AnimalOnDied(AnimalBase animal)
+        {
+            animal.Died -= AnimalOnDied;
+            _animalsInObjectPool.Add(animal);
+            
+            animal.transform.SetParent(_objectPoolParent);
+            animal.gameObject.SetActive(false);
+            animal.transform.position = Vector3.zero;
         }
 
         public void Dispose()

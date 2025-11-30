@@ -61,6 +61,7 @@ namespace Game.GameField.Builders.Walls
             wallGO.transform.rotation = Quaternion.identity;
 
             var collider = wallGO.AddComponent<BoxCollider>();
+            wallGO.AddComponent<Walls.Wall>();
             collider.size = size;
 
             wallGO.tag = "Wall";

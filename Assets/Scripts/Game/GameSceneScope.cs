@@ -1,8 +1,10 @@
-using Game.Animals.Events;
+using Game.Animals.EventHub;
 using Game.Animals.Factory;
 using Game.Animals.Pool;
+using Game.Animals.StatCounters;
 using Game.GameField;
 using Game.Providers;
+using Game.UI.UpPanel;
 using VContainer;
 using VContainer.Unity;
 
@@ -16,17 +18,22 @@ namespace Game
             .As<GameFieldPresenter>()
             .As<IRandomPointProvider>()
             .As<IGameFieldCenterProvider>();
-            
+
             builder.RegisterComponentInHierarchy<AnimalsFactory>()
-                .As<AnimalsFactory>()
-                .As<IAnimalsCreator>();
+                .As<AnimalsFactory>();
+
+            builder.RegisterComponentInHierarchy<UpPanelPresenter>();
             
-            // builder.RegisterComponentInHierarchy<CollisionProvider>();
-            builder.Register<AnimalsPool>(Lifetime.Scoped).As<IAnimalsHashSetProvider>();
+            
+            
+            builder.Register<AnimalsEventHub>(Lifetime.Scoped)
+                .As<IAnimalsEventHub>();
 
-            // builder.RegisterEntryPoint<CollisionProvider>();
+            builder.RegisterEntryPoint<DiedCounter>(Lifetime.Scoped);
+            builder.RegisterEntryPoint<AnimalsPool>(Lifetime.Scoped)
+                .As<IObjectPoolProvider>();
         }
-
+        //
         protected override void Awake()
         {
             base.Awake();

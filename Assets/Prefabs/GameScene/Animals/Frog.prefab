@@ -84,14 +84,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   view: {fileID: 1962919892242925943}
-  data:
+  moverData:
     moveSpeed: 2
     rotationSpeed: 15
     jumpIntervalSeconds: 0.5
-    jumpDurationSeconds: 1
-    jumpHeight: 0.1
-  collisionBehaviourData:
-    wallRedirectAngleThreshold: 160
+    jumpDurationSeconds: 0.5
+    jumpHeight: 0.5
+  collisionData:
+    redirectFromWallCollisionBehaviourData:
+      wallRedirectAngleThreshold: 180
 --- !u!114 &1962919892242925943
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -142,7 +143,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1787837232763357113}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 6868d90245e9a4130bec22edc4908cd5, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

@@ -83,12 +83,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   view: {fileID: 1962919892242925943}
-  moveSpeed: 2
-  jumpMoverData:
+  data:
     moveSpeed: 2
     jumpIntervalSeconds: 0.5
     jumpDurationSeconds: 1
-    jumpHeight: 0.5
+    jumpHeight: 1
 --- !u!114 &1962919892242925943
 MonoBehaviour:
   m_ObjectHideFlags: 0

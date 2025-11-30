@@ -7,19 +7,19 @@ using Random = UnityEngine.Random;
 
 namespace Game.Animals.Behaviour.Movers
 {
-    public class JumpMover : IMover, IDisposable
+    public class JumpMover : IGenericMover<JumpMoverData>, IDisposable
     {
-        private readonly JumpMoverData _data;
+        private JumpMoverData _data;
         
         private Vector2 _direction;
         private Vector3 _lastDir;
         private CancellationTokenSource _moveCts;
 
-        public JumpMover(JumpMoverData data)
+        public void Initialize(JumpMoverData data)
         {
             _data = data;
         }
-
+        
         private void RandomizeDirection()
         {
             if (_direction != Vector2.zero) return;

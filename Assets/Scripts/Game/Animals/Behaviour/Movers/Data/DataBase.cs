@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Game.Animals.Behaviour.Movers.Data
 {
     [Serializable]
-    public class DataBase
+    public class DataBase : IMoverData
     {
         [SerializeField] private float moveSpeed;
         

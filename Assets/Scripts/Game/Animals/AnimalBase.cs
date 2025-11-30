@@ -1,9 +1,6 @@
 using System;
-using System.Threading;
-using Cysharp.Threading.Tasks;
 using Game.Animals.Behaviour.Movers;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace Game.Animals
 {
@@ -12,7 +9,6 @@ namespace Game.Animals
         public event Action<AnimalBase, Collision> CollisionEntered;
         
         [SerializeField] protected AnimalView view;
-        [SerializeField] protected float moveSpeed = 2f;
 
         protected IMover Mover;
         

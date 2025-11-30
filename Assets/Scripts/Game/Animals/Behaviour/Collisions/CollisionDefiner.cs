@@ -1,3 +1,40 @@
+using System;
+using System.Linq;
+using Game.Animals.Behaviour.Collisions.InteractionInterfaces;
+using UnityEngine;
+
+namespace Game.Animals.Behaviour.Collisions
+{
+    public sealed class CollisionDefiner
+    {
+        public void OnCollision(IAnimalCollisionBehaviour animalCollisionBehaviour, Collision collision )
+        {
+            if (collision.collider.CompareTag("Wall"))
+            {
+                if (animalCollisionBehaviour.TryGetController<IWallInteractable>(out var wallInteractable)) 
+                    wallInteractable.OnWallCollision(collision.transform.position);
+                
+                return;
+            }
+            
+            if (collision.collider.TryGetComponent<AnimalBase>(out var collisionAnimal))
+            {
+                foreach (var collisionAnimalRole in collisionAnimal.Roles)
+                {
+                    Debug.Log(collisionAnimalRole);
+                    
+                    //
+                    // collisionAnimalRole
+                    // if (animalCollisionBehaviour.TryGetController<IWallInteractable>(out var wallInteractable)) 
+                    //     wallInteractable.OnWallCollision(collision.transform.position);
+                }
+            }
+
+            // throw new NotImplementedException();
+        }
+    }
+}
+
 // using Game.Animals.Events;
 // using Game.Animals.Pool;
 // using Game.Providers;

@@ -46,6 +46,7 @@ GameObject:
   - component: {fileID: 5531459601762461516}
   - component: {fileID: 1962919892242925943}
   - component: {fileID: 1600988794691135031}
+  - component: {fileID: 7031465129366739489}
   m_Layer: 0
   m_Name: Frog
   m_TagString: Prey
@@ -88,7 +89,7 @@ MonoBehaviour:
     rotationSpeed: 15
     jumpIntervalSeconds: 0.5
     jumpDurationSeconds: 1
-    jumpHeight: 1
+    jumpHeight: 0.1
   collisionBehaviourData:
     wallRedirectAngleThreshold: 160
 --- !u!114 &1962919892242925943
@@ -103,7 +104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c67dac1e1f7042cc9339203521201ab5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bodyCollider: {fileID: 3703217752506030454}
+  bodyCollider: {fileID: 7031465129366739489}
   filter: {fileID: 4453978094511413813}
   rb: {fileID: 1600988794691135031}
   meshRenderer: {fileID: 1503521889592833893}
@@ -134,6 +135,27 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!135 &7031465129366739489
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1787837232763357113}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2746304783512100174
 GameObject:
   m_ObjectHideFlags: 0
@@ -317,7 +339,6 @@ GameObject:
   - component: {fileID: 7641990291484882959}
   - component: {fileID: 4453978094511413813}
   - component: {fileID: 1503521889592833893}
-  - component: {fileID: 3703217752506030454}
   m_Layer: 0
   m_Name: Body
   m_TagString: Prey
@@ -393,27 +414,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &3703217752506030454
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4565454524533513157}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8788795243879033956
 GameObject:
   m_ObjectHideFlags: 0

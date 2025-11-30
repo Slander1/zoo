@@ -1,4 +1,6 @@
 using System;
+using Game.Animals.Roles.MarkerInterfaces;
+using Game.Animals.Variants.Predators;
 using UnityEngine;
 
 namespace Game.Animals.Behaviour.Collisions.Data
@@ -7,15 +9,16 @@ namespace Game.Animals.Behaviour.Collisions.Data
     public sealed class CollisionBehaviourData : ICollisionBehaviourData
     {
         [SerializeField] private float wallRedirectAngleThreshold = 120f;
-        
+        private int _force;
+
         public float WallRedirectAngleThreshold => wallRedirectAngleThreshold;
-        public Transform Transform { get; private set; }
-        public Action<Vector2> OnBlockedByObstacle { get; private set; }
+        public AnimalBase Animal { get; private set;}
+        public CollisionDefiner CollisionDefiner { get; private set; }
         
-        public void Initialize(Transform transform, Action<Vector2> onBlockedByObstacle)
+        public void Initialize(AnimalBase animalBase, CollisionDefiner collisionDefiner)
         {
-            Transform = transform;
-            OnBlockedByObstacle = onBlockedByObstacle;
+            Animal =  animalBase;
+            CollisionDefiner = collisionDefiner;
         }
     }
 }

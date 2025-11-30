@@ -2,6 +2,6 @@ namespace Game.Animals.Variants.Predators
 {
     public interface IHaveForce
     {
-        public int Force { get; protected set; }
+        public int Force { get; }
     }
 }

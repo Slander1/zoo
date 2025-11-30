@@ -1,5 +1,3 @@
-using Game.Animals.Behaviour;
-using Game.Animals.Behaviour.Collisions;
 using Game.Animals.Events;
 using Game.Animals.Factory;
 using Game.Animals.Pool;

@@ -2,29 +2,26 @@ using System;
 using System.Threading;
 using CoreLogic.Utility;
 using Cysharp.Threading.Tasks;
+using Game.Animals.Behaviour.Movers.Data;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 
 namespace Game.Animals.Behaviour.Movers
 {
-    public class LinearMover : IMover, IDisposable
+    public class LinearMover :  IGenericMover<DataBase>, IDisposable
     {
-        private readonly AnimalView _view;
-        private readonly Transform _transform;
-        private readonly float _moveSpeed;
-
+        private DataBase _data;
+        
         private Vector2 _direction;
         private Vector3 _lastDir;
         private CancellationTokenSource _moveCts;
-
-        public LinearMover(AnimalView view, Transform transform, float moveSpeed)
+        
+        public void Initialize(DataBase data)
         {
-            _view = view;
-            _transform = transform;
-            _moveSpeed = moveSpeed;
+            _data = data;
         }
-
+        
         private void RandomizeDirection()
         {
             if (_direction != Vector2.zero) return;
@@ -44,7 +41,7 @@ namespace Game.Animals.Behaviour.Movers
         {
             TokenHelper.Dispose(_moveCts);
             _direction = Vector2.zero;
-            _view.ChangeVelocity(Vector3.zero);
+            _data.View.ChangeVelocity(Vector3.zero);
         }
 
         public void OnBlockedByObstacle(Vector2 obstacleNormal)
@@ -75,11 +72,11 @@ namespace Game.Animals.Behaviour.Movers
 
                 if (dir3 != Vector3.zero && dir3 != _lastDir)
                 {
-                    _transform.forward = dir3;
+                    _data.Transform.forward = dir3;
                     _lastDir = dir3;
                 }
 
-                _view.ChangeVelocity(dir3 * _moveSpeed);
+                _data.View.ChangeVelocity(dir3 * _data.MoveSpeed);
 
                 await UniTask.Yield(PlayerLoopTiming.FixedUpdate, token);
             }

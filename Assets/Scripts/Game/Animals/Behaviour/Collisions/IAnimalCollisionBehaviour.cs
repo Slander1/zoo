@@ -1,4 +1,5 @@
 using Game.Animals.Behaviour.Collisions.Data;
+using Game.Animals.Behaviour.Collisions.InteractionInterfaces;
 using UnityEngine;
 
 namespace Game.Animals.Behaviour.Collisions
@@ -7,10 +8,7 @@ namespace Game.Animals.Behaviour.Collisions
     {
         public void Initialize(ICollisionBehaviourData data); 
         
-        public void Collision(Collision collision);
-
-        public void OnWallCollision(float wall);
-        public void OnPreyCollision(Collision collision);
-        public void OnPredatorCollision(Collision collision);
+        public void OnCollision(Collision collision);
+        public bool TryGetController<TController>(out TController value) where TController : class, IInteractableControllerMarker;
     }
 }

@@ -1,48 +1,67 @@
+using System;
+using System.Collections.Generic;
 using Game.Animals.Behaviour.Collisions.Data;
+using Game.Animals.Behaviour.Collisions.InteractionControllers.Interfaces;
+using Game.Animals.Behaviour.Collisions.InteractionInterfaces;
+using Game.Utility;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Game.Animals.Behaviour.Collisions
 {
-    public abstract class CollisionBehaviourBase : IGenericCollisionBehaviour<ICollisionBehaviourData>
+    public abstract class CollisionBehaviourBase : IGenericCollisionBehaviour<ICollisionBehaviourData>, IWallInteractable
     {
-        private ICollisionBehaviourData _data;
+        protected ICollisionBehaviourData Data;
+        private readonly Dictionary<Type, IInteractableControllerMarker> _interactableControllers = new(); 
         
         public void Initialize(ICollisionBehaviourData data)
         {
-            _data = data;
+            Data = data;
+            InitializeInteractableControllersComponents();
         }
         
-        public void Collision(Collision collision)
+        public void OnCollision(Collision collision)
         {
-            if (collision.collider.CompareTag("Wall"))
-            {
-                var wallPos = collision.transform.position;
-                RedirectFromWall(wallPos);
-                return;
-            }
+            Data.CollisionDefiner.OnCollision(this, collision);
         }
 
-        public abstract void OnWallCollision(float wall);
+        private void InitializeInteractableControllersComponents()
+        {
+            InteractableControllersHelper.RegisterMarkerInterfaces(this, _interactableControllers);
+        }
+        
+        public bool TryGetController<TController>(out TController value) where TController : class, IInteractableControllerMarker
+        {
+            if (_interactableControllers.TryGetValue(typeof(TController), out var raw))
+            {
+                value = raw as TController;
+                return value != null;
+            }
 
-        public abstract void OnPreyCollision(Collision collision);
-
-        public abstract void OnPredatorCollision(Collision collision);
-
+            value = null;
+            return false;
+        }
+        
+        public void OnWallCollision(Vector3 wallPos)
+        {
+            RedirectFromWall(wallPos);
+        }
+        
         private void RedirectFromWall(Vector3 wallPos)
         {
-            var animalPos = _data.Transform.position;
-
+            var animalPos = Data.Animal.transform.position;
+        
             var directionToWall = (wallPos - animalPos).normalized;
-            var viewDir = _data.Transform.forward;
+            var viewDir = Data.Animal.transform.forward;
             var angleToWall = Vector3.Angle(viewDir, directionToWall);
-
-            if (angleToWall > _data.WallRedirectAngleThreshold)
+        
+            if (angleToWall > Data.WallRedirectAngleThreshold)
                 return;
-
+        
             var outward3 = (wallPos ).normalized;
             var normal2D = new Vector2(outward3.x, outward3.z);
-
-            _data.OnBlockedByObstacle.Invoke(normal2D);
+        
+            Data.Animal.OnBlockedByObstacle(normal2D);
         }
     }
 }

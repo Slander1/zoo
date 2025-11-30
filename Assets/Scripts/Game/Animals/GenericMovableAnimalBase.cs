@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Game.Animals
 {
-    public class GenericMovableAnimalBase<TMover, TMoverData, TCollisionBeh, TTCollisionBehData>: AnimalBase
+    public abstract class GenericMovableAnimalBase<TMover, TMoverData, TCollisionBeh, TTCollisionBehData>: AnimalBase
         where TMover : IGenericMover<TMoverData>, new()
         where TMoverData  : IMoverData
         where TCollisionBeh : IAnimalCollisionBehaviour, new()
@@ -27,7 +27,7 @@ namespace Game.Animals
         {
             var genericBeh = new TCollisionBeh();
             genericBeh.Initialize(collisionBehaviourData);
-            collisionBehaviourData.Initialize(transform, OnBlockedByObstacle);
+            collisionBehaviourData.Initialize(this, CollisionDefiner);
             CollisionBehaviour = genericBeh;
         }
     }

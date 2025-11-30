@@ -1,22 +1,15 @@
-using UnityEngine;
+using Game.Animals.Behaviour.Collisions.InteractionInterfaces;
+using Game.Animals.Variants.Predators;
 
 namespace Game.Animals.Behaviour.Collisions.Variants
 {
-    public sealed class PreyCollisionBeh : CollisionBehaviourBase
+    public sealed class PreyCollisionBeh : CollisionBehaviourBase, IPredatorMarkerInteractable
     {
-        public override void OnWallCollision(float wall)
+        public void OnPredatorCollision(IHaveForce haveForce)
         {
-            throw new System.NotImplementedException();
+            Data.Animal.Die();
         }
 
-        public override void OnPreyCollision(Collision collision)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override void OnPredatorCollision(Collision collision)
-        {
-            throw new System.NotImplementedException();
-        }
+        public int Force { get; }
     }
 }

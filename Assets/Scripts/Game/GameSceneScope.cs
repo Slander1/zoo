@@ -1,4 +1,5 @@
 using Game.Animals.Behaviour;
+using Game.Animals.Behaviour.Collisions;
 using Game.Animals.Events;
 using Game.Animals.Factory;
 using Game.Animals.Pool;
@@ -22,10 +23,10 @@ namespace Game
                 .As<AnimalsFactory>()
                 .As<IAnimalsCreator>();
             
-            builder.Register<CollisionProvider>(Lifetime.Scoped);
+            // builder.RegisterComponentInHierarchy<CollisionProvider>();
             builder.Register<AnimalsPool>(Lifetime.Scoped).As<IAnimalsHashSetProvider>();
 
-            builder.RegisterEntryPoint<CollisionProvider>();
+            // builder.RegisterEntryPoint<CollisionProvider>();
         }
 
         protected override void Awake()

@@ -1,5 +1,6 @@
 using System;
 using System.Threading;
+using CoreLogic.Utility;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -33,7 +34,7 @@ namespace Game.Animals.Behaviour.Movers
         public void StartMove()
         {
             RandomizeDirection();
-            DisposeToken();
+            TokenHelper.Dispose(_moveCts);
 
             _moveCts = new CancellationTokenSource();
             MoveLoopAsync(_moveCts.Token).Forget();
@@ -41,7 +42,7 @@ namespace Game.Animals.Behaviour.Movers
 
         public void StopMove()
         {
-            DisposeToken();
+            TokenHelper.Dispose(_moveCts);
             _direction = Vector2.zero;
             _view.ChangeVelocity(Vector3.zero);
         }
@@ -65,15 +66,6 @@ namespace Game.Animals.Behaviour.Movers
 
             _direction = NormalsHelper.ChooseSlideDirection(dir, n, cw, ccw);
         }
-        
-        private void DisposeToken()
-        {
-            if (_moveCts == null) return;
-
-            _moveCts.Cancel();
-            _moveCts.Dispose();
-            _moveCts = null;
-        }
 
         private async UniTaskVoid MoveLoopAsync(CancellationToken token)
         {
@@ -95,7 +87,7 @@ namespace Game.Animals.Behaviour.Movers
 
         public void Dispose()
         {
-            DisposeToken();
+            TokenHelper.Dispose(_moveCts);
         }
     }
 }

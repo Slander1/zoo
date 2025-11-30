@@ -1,4 +1,5 @@
 using System;
+using Game.Animals.Behaviour.Collisions;
 using Game.Animals.Behaviour.Movers;
 using UnityEngine;
 
@@ -6,17 +7,19 @@ namespace Game.Animals
 {
     public abstract class AnimalBase : MonoBehaviour
     {
-        public event Action<AnimalBase, Collision> CollisionEntered;
+        public event Action<AnimalBase> Died;
         
         [SerializeField] protected AnimalView view;
-
+        
         protected IMover Mover;
+        protected IAnimalCollisionBehaviour CollisionBehaviour;
         
         #region === Unity Events ===
 
         private void Awake()
         {
             InitializeMover();
+            InitializeCollisionBehaviour();
         }
 
         private void OnEnable()
@@ -38,16 +41,22 @@ namespace Game.Animals
             return view.GetObjectHeight();
         }
 
-        public void OnBlockedByObstacle(Vector2 obstacleNormal)
+        protected void OnBlockedByObstacle(Vector2 obstacleNormal)
         {
             Mover.OnBlockedByObstacle(obstacleNormal);
         }
         
         private void OnViewCollisionEnter(Collision collision)
         {
-            CollisionEntered?.Invoke(this, collision);
+            CollisionBehaviour.Collision(collision);
         }
         
         protected abstract void InitializeMover();
+        protected abstract void InitializeCollisionBehaviour();
+
+        protected void Die()
+        {
+            Died?.Invoke(this);
+        }
     }
 }

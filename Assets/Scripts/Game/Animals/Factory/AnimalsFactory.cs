@@ -1,4 +1,7 @@
 using System;
+using System.Threading;
+using CoreLogic.Utility;
+using Cysharp.Threading.Tasks;
 using Game.Animals.Events;
 using Game.Providers;
 using UnityEngine;
@@ -13,10 +16,11 @@ namespace Game.Animals.Factory
         
         [SerializeField] private AnimalBase[] animals;
         [SerializeField] private Transform animalParent;
-        
-        private AnimalsPositioner _positioner = new();
-        
+        [SerializeField] private float spawnIntervalSeconds = 3f;
+
         private GetRandomPointOnField _getRandomPointOnField;
+
+        private CancellationTokenSource _cts;
 
         [Inject]
         public void Construct(IRandomPointProvider randomPointProvider)
@@ -24,18 +28,41 @@ namespace Game.Animals.Factory
             _getRandomPointOnField = randomPointProvider.GetRandomPointOnField;
         }
 
-        #region === Unity Events ===
-
         private void Start()
         {
-            CreateRandomAnimal();
+            _cts = new CancellationTokenSource();
+            SpawnLoopAsync(_cts.Token).Forget();
         }
 
-        #endregion === Unity Events ===
+        private void OnDestroy()
+        {
+            TokenHelper.Dispose(_cts);
+        }
+        
+        private async UniTaskVoid SpawnLoopAsync(CancellationToken token)
+        {
+            await UniTask.NextFrame();
+            
+            while (!token.IsCancellationRequested)
+            {
+                CreateRandomAnimal();
+
+                try
+                {
+                    await UniTask.Delay(
+                        TimeSpan.FromSeconds(spawnIntervalSeconds),
+                        cancellationToken: token
+                    );
+                }
+                catch (OperationCanceledException)
+                {
+                    break;
+                }
+            }
+        }
 
         private void CreateRandomAnimal()
         {
-            
             var randomAnimalIndex = Random.Range(0, animals.Length);
             var animalPrefab = animals[randomAnimalIndex];
 
@@ -47,6 +74,5 @@ namespace Game.Animals.Factory
             createdAnimal.transform.position += new Vector3(0f, createdAnimal.GetObjectHeight() / 2f, 0f);
             AnimalsCreated?.Invoke(createdAnimal);
         }
-
     }
 }

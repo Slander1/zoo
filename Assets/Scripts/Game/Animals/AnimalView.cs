@@ -10,10 +10,14 @@ namespace Game.Animals
         [SerializeField] private Collider bodyCollider;
         [SerializeField] private MeshFilter filter;
         [SerializeField] private Rigidbody rb;
-        
-        public abstract void ChangeColor(Color color);
+        [SerializeField] private MeshRenderer meshRenderer;
 
         #region === Unity Events ===
+
+        private void Awake()
+        {
+            SetRandomColor();
+        }
 
         private void OnCollisionEnter(Collision collision)
         {
@@ -29,6 +33,22 @@ namespace Game.Animals
         public virtual void ChangeVelocity(Vector3 velocity)
         {
             rb.linearVelocity = velocity;
+        }
+        
+        public void SetRandomColor()
+        {
+            var randomColor = new Color(
+                UnityEngine.Random.value,
+                UnityEngine.Random.value,
+                UnityEngine.Random.value
+            );
+
+            ChangeColor(randomColor);
+        }
+        
+        private void ChangeColor(Color color)
+        {
+            meshRenderer.material.color = color;
         }
     }
 }

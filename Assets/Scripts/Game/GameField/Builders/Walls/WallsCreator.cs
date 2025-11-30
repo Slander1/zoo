@@ -30,7 +30,7 @@ namespace Game.GameField.Builders.Walls
 
             CreateWall(
                 parent,
-                new Vector3(bounds.min.x - wallThickness * 0.5f,posY, bounds.center.z),
+                new Vector3(bounds.min.x  - wallThickness * 0.5f,posY, bounds.center.z),
                 new Vector3(wallThickness, wallHeight, widthZ)
             );
 

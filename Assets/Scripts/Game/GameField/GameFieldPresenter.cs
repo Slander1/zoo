@@ -1,4 +1,6 @@
 using System;
+using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using Game.GameField.Builders.Data;
 using Game.GameField.Builders.Walls;
 using Game.Providers;
@@ -17,8 +19,14 @@ namespace Game.GameField
         
         private void Start()
         {
+            CreateField().Forget();
+        }
+
+        private async UniTask CreateField()
+        {
             var creator = new GameFieldCreator(buildersData);
             _view = creator.CreateFullScreenFieldView();
+            await UniTask.NextFrame();
             var wallsCreator = new WallsCreator(buildersData, _view);
             wallsCreator.CreateWalls();
         }
@@ -34,10 +42,7 @@ namespace Game.GameField
             var origin = new Vector3(x, b.max.y + 0.1f, z);
             var ray = new Ray(origin, Vector3.down);
 
-            if (mesh.Raycast(ray, out RaycastHit hit, b.size.y + 1f))
-            {
-                return hit.point + new Vector3(0f, _view.transform.localPosition.y, 0f);
-            }
+            if (mesh.Raycast(ray, out RaycastHit hit, b.size.y + 1f)) return hit.point;
             
             throw new Exception("Can't get random point at the field");
         }

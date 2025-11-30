@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Game.Animals.Events;
-using UnityEngine;
 using VContainer.Unity;
 
 namespace Game.Animals.Pool
@@ -43,21 +42,6 @@ namespace Game.Animals.Pool
         public void Dispose()
         {
             UnsubscribeFromEvents();
-        }
-        
-        public void IsHaveAnimalInObjectPool(AnimalBase animal)
-        {
-            
-        }
-        
-        public void OnCreateAnimal(AnimalBase animal)
-        {
-            
-        }
-
-        public void OnDestroyAnimalPool(AnimalBase animal)
-        {
-            
         }
     }
 }

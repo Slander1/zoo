@@ -16,7 +16,6 @@ namespace Game.Animals.Behaviour.Movers
         private Vector3 _lastDir;
         private CancellationTokenSource _moveCts;
 
-        // множитель скорости только на ближайший прыжок
         private float _repulseSpeedMultiplier = 1f;
 
         public void Initialize(JumpMoverData data)

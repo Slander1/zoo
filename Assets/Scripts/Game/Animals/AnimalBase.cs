@@ -28,14 +28,6 @@ namespace Game.Animals
             InitializeMover();
             InitializeCollisionController();
         }
-        
-        // public void Initialize(ICollisionBehaviourData data)
-        // {
-        //     // Регистрируем реакции
-        //     ReactedTo[typeof(IWall)] = ReactTo;
-        //     ReactedTo[typeof(PreyAnimal)]   = OnPreyReaction;
-        // }
-
 
         private void OnEnable()
         {

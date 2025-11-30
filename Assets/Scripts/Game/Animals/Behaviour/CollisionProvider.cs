@@ -1,18 +1,28 @@
 using System;
 using Game.Animals.Events;
+using Game.Animals.Pool;
+using Game.Providers;
 using UnityEngine;
+using VContainer.Unity;
 
 namespace Game.Animals.Behaviour
 { 
-    public sealed class CollisionProvider : IDisposable
+    public sealed class CollisionProvider : IStartable, IDisposable
     {
-        private IAnimalsCreator _animalsCreator;
+        private readonly IAnimalsCreator _animalsCreator;
+        private readonly IGameFieldCenterProvider _gameFieldCenterProvider;
+        private readonly IAnimalsHashSetProvider _animalsHashSetProvider;
         
-        // private List<AnimalBase> _animalsOnWhichSubscribe;
-        
-        public CollisionProvider(IAnimalsCreator animalsCreator)
+        public CollisionProvider(IAnimalsCreator animalsCreator, 
+            IAnimalsHashSetProvider hashSetProvider, IGameFieldCenterProvider  gameFieldCenterProvider)
         {
             _animalsCreator = animalsCreator;
+            _animalsHashSetProvider = hashSetProvider;
+            _gameFieldCenterProvider = gameFieldCenterProvider;
+        }
+
+        void IStartable.Start()
+        {
             SubscribeOnEvents();
         }
         
@@ -24,6 +34,9 @@ namespace Game.Animals.Behaviour
         private void UnsubscribeFromEvents()
         {
             _animalsCreator.AnimalsCreated -= OnAnimalsCreated;
+            
+            foreach (var animalBase in _animalsHashSetProvider.AnimalsOnField) 
+                animalBase.CollisionEntered -= AnimalOnCollisionEntered;
         }
         
         private void OnAnimalsCreated(AnimalBase animal)
@@ -31,9 +44,16 @@ namespace Game.Animals.Behaviour
             animal.CollisionEntered += AnimalOnCollisionEntered;
         }
 
-        private void AnimalOnCollisionEntered(AnimalBase arg1, Collision arg2)
+        private void AnimalOnCollisionEntered(AnimalBase animal, Collision collision)
         {
-            throw new NotImplementedException();
+            if (!collision.collider.CompareTag("Wall"))
+                return;
+
+            var wallPos = collision.transform.position;
+            var outward3 = (wallPos - _gameFieldCenterProvider.GetFieldCenter()).normalized;
+            var normal2D = new Vector2(outward3.x, outward3.z);
+            
+            animal.OnBlockedByObstacle(normal2D);
         }
 
         public void Dispose()

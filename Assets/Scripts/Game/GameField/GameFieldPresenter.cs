@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 
 namespace Game.GameField
 {
-    public sealed class GameFieldPresenter : MonoBehaviour, IRandomPointProvider
+    public sealed class GameFieldPresenter : MonoBehaviour, IRandomPointProvider, IGameFieldCenterProvider
     {
         [SerializeField] private BuildersData buildersData;
 
@@ -40,6 +40,11 @@ namespace Game.GameField
             }
             
             throw new Exception("Can't get random point at the field");
+        }
+
+        public Vector3 GetFieldCenter()
+        {
+            return _view.transform.position;
         }
     }
 }

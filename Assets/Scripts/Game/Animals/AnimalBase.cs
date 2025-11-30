@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Game.Animals.Behaviour.Movers;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -10,34 +11,28 @@ namespace Game.Animals
     {
         public event Action<AnimalBase, Collision> CollisionEntered;
         
-        [SerializeField] private AnimalView view;
-        [SerializeField] private float moveSpeed = 2f;
-        
-        private Vector2 _direction;
-        private CancellationTokenSource _moveCts;
-        private Vector3 _lastDir;
+        [SerializeField] protected AnimalView view;
+        [SerializeField] protected float moveSpeed = 2f;
 
-        public void Initialize()
-        {
-            
-        }
+        protected IMover Mover;
         
         #region === Unity Events ===
 
-        private void OnEnable()
+        private void Awake()
         {
-            StartMoveOnField();
+            InitializeMover();
         }
 
-        private void OnCollisionEnter(Collision collision)
+        private void OnEnable()
         {
-            Debug.Log($"Collision Enter, {collision.transform.name}");
-            CollisionEntered?.Invoke(this, collision);
+            Mover.StartMove();
+            view.CollisionEntered += OnViewCollisionEnter;
         }
 
         private void OnDisable()
         {
-            StopMoveOnField();
+            Mover.StopMove();
+            view.CollisionEntered -= OnViewCollisionEnter;
         }
 
         #endregion === Unity Events ===
@@ -46,55 +41,17 @@ namespace Game.Animals
         {
             return view.GetObjectHeight();
         }
-        
-        private void StartMoveOnField()
-        {
-            CheckDirection();
-            DisposeMoveToken();
-            _moveCts = new CancellationTokenSource();
 
-            MoveLoopAsync(_moveCts.Token).Forget();
+        public void OnBlockedByObstacle(Vector2 obstacleNormal)
+        {
+            Mover.OnBlockedByObstacle(obstacleNormal);
         }
         
-        private void StopMoveOnField()
+        private void OnViewCollisionEnter(Collision collision)
         {
-            DisposeMoveToken();
-            _direction =  Vector2.zero;
-        }
-
-        private void RandomizeDirection()
-        {
-            _direction = Random.insideUnitCircle.normalized;
-        }
-
-        private void CheckDirection()
-        {
-            if (_direction == Vector2.zero) RandomizeDirection();
-        }
-
-        private void DisposeMoveToken()
-        {
-            if (_moveCts == null) return;
-            
-            _moveCts.Cancel();
-            _moveCts.Dispose();
-            _moveCts = null;
+            CollisionEntered?.Invoke(this, collision);
         }
         
-        private async UniTaskVoid MoveLoopAsync(CancellationToken token)
-        {
-            while (!token.IsCancellationRequested)
-            {
-                var dir3 = new Vector3(_direction.x, 0f, _direction.y);
-                if (dir3 != Vector3.zero && dir3 != _lastDir)
-                {
-                    transform.forward = dir3;
-                    _lastDir = dir3;
-                }
-                view.ChangeVelocity(dir3 * moveSpeed);
-                
-                await UniTask.Yield(PlayerLoopTiming.FixedUpdate, token);
-            }
-        }
+        protected abstract void InitializeMover();
     }
 }

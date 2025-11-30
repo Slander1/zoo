@@ -63,8 +63,7 @@ namespace Game.GameField.Builders.Walls
             var collider = wallGO.AddComponent<BoxCollider>();
             collider.size = size;
 
-            // Если хочешь ловить по тегу:
-            // wallGO.tag = "Wall";
+            wallGO.tag = "Wall";
         }
     }
 }

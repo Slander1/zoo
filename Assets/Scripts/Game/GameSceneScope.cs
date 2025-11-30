@@ -1,5 +1,7 @@
+using Game.Animals.Behaviour;
 using Game.Animals.Events;
 using Game.Animals.Factory;
+using Game.Animals.Pool;
 using Game.GameField;
 using Game.Providers;
 using VContainer;
@@ -13,11 +15,17 @@ namespace Game
         {
             builder.RegisterComponentInHierarchy<GameFieldPresenter>()
             .As<GameFieldPresenter>()
-            .As<IRandomPointProvider>();
+            .As<IRandomPointProvider>()
+            .As<IGameFieldCenterProvider>();
+            
             builder.RegisterComponentInHierarchy<AnimalsFactory>()
                 .As<AnimalsFactory>()
                 .As<IAnimalsCreator>();
-            // builder.RegisterComponent<AnimalsBehEventProvider>();
+            
+            builder.Register<CollisionProvider>(Lifetime.Scoped);
+            builder.Register<AnimalsPool>(Lifetime.Scoped).As<IAnimalsHashSetProvider>();
+
+            builder.RegisterEntryPoint<CollisionProvider>();
         }
 
         protected override void Awake()

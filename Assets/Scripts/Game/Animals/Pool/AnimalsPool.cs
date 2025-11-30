@@ -2,11 +2,14 @@ using System;
 using System.Collections.Generic;
 using Game.Animals.Events;
 using UnityEngine;
+using VContainer.Unity;
 
 namespace Game.Animals.Pool
 {
-    public sealed class AnimalsPool : IDisposable
+    public sealed class AnimalsPool : IStartable, IDisposable, IAnimalsHashSetProvider
     {
+        public HashSet<AnimalBase> AnimalsOnField => _animalsOnField;
+        
         private HashSet<AnimalBase> _animalsOnField = new();
         private HashSet<AnimalBase> _animalsInObjectPool = new();
 
@@ -15,6 +18,10 @@ namespace Game.Animals.Pool
         public AnimalsPool(IAnimalsCreator animalsCreator)
         {
             _animalsCreator = animalsCreator;
+        }
+        
+        void IStartable.Start()
+        {
             SubscribeOnEvents();
         }
         

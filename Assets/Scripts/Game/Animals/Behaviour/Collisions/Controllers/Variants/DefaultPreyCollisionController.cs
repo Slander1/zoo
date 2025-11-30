@@ -1,5 +1,6 @@
 using Game.Animals.Behaviour.Collisions.Controllers.Data;
 using Game.Animals.Behaviour.Collisions.ReactLogic.PreyCollidedWithPredator;
+using Game.Animals.Behaviour.Collisions.ReactLogic.RedirectFromPray;
 using Game.Animals.Behaviour.Collisions.ReactLogic.RedirectFromWall;
 using Game.Animals.Roles;
 using Game.GameField.Builders.Walls;
@@ -12,6 +13,7 @@ namespace Game.Animals.Behaviour.Collisions.Controllers.Variants
         {
             base.Initialize(dataBase);
             Reacts.Add(typeof(IWall), new RedirectFromWallCollisionBehaviour(Data.RedirectFromWallCollisionBehaviourData));
+            Reacts.Add(typeof(IPray), new RedirectFromPrayBehaviour(Data.RedirectFromPrayData));
             Reacts.Add(typeof(IPredator), new PreyCollidedWithPredatorBehaviour());
         }
     }

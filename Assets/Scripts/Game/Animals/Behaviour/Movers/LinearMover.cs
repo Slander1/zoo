@@ -86,5 +86,25 @@ namespace Game.Animals.Behaviour.Movers
         {
             TokenHelper.Dispose(_moveCts);
         }
+
+        public void Repulsed(Vector3 direction, float strength)
+        {
+            direction.y = 0f;
+            if (direction == Vector3.zero)
+                return;
+            
+            direction.Normalize();
+
+            _direction = new Vector2(direction.x, direction.z);
+
+            var boostedVelocity = new Vector3(_direction.x, 0f, _direction.y) * (_data.MoveSpeed * strength);
+
+            _data.View.ChangeVelocity(boostedVelocity);
+        }
+
+        public void Repulsed(System.Numerics.Vector3 direction, float strength)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

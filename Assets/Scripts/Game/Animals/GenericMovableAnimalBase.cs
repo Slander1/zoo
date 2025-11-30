@@ -29,7 +29,7 @@ namespace Game.Animals
             var genericICollisionController = new TCollisionController();
             genericICollisionController.Initialize(collisionData);
             CollisionController = genericICollisionController;
-            collisionData.Initialize(OnBlockedByObstacle);
+            collisionData.Initialize(Mover.OnBlockedByObstacle, Mover.Repulsed);
         }
      }
 }

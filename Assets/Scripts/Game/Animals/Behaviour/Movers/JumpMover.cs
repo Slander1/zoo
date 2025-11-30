@@ -16,6 +16,9 @@ namespace Game.Animals.Behaviour.Movers
         private Vector3 _lastDir;
         private CancellationTokenSource _moveCts;
 
+        // множитель скорости только на ближайший прыжок
+        private float _repulseSpeedMultiplier = 1f;
+
         public void Initialize(JumpMoverData data)
         {
             _data = data;
@@ -99,7 +102,8 @@ namespace Game.Animals.Behaviour.Movers
                         _lastDir = dir3;
                     }
 
-                    _data.View.ChangeVelocity(dir3 * _data.MoveSpeed);
+                    var speed = _data.MoveSpeed * _repulseSpeedMultiplier;
+                    _data.View.ChangeVelocity(dir3 * speed);
 
                     var t = elapsed / _data.JumpDurationSeconds;
                     var height = Mathf.Sin(t * Mathf.PI) * _data.JumpHeight;
@@ -116,6 +120,7 @@ namespace Game.Animals.Behaviour.Movers
                 resetPos.y = baseY;
                 _data.Transform.position = resetPos;
 
+                _repulseSpeedMultiplier = 1f;
                 _data.View.ChangeVelocity(Vector3.zero);
             }
         }
@@ -123,6 +128,19 @@ namespace Game.Animals.Behaviour.Movers
         public void Dispose()
         {
             TokenHelper.Dispose(_moveCts);
+        }
+        
+        public void Repulsed(Vector3 direction, float strength)
+        {
+            direction.y = 0f;
+            if (direction == Vector3.zero)
+                return;
+
+            direction.Normalize();
+
+            _direction = new Vector2(direction.x, direction.z);
+
+            _repulseSpeedMultiplier = Mathf.Max(1f, strength);
         }
     }
 }

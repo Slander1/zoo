@@ -1,8 +1,9 @@
+using Game.Animals.StateInterfaces;
 using UnityEngine;
 
 namespace Game.Animals.Behaviour.Movers
 {
-    public interface IMover
+    public interface IMover : IRepulsable
     {
         public void StartMove();
         public void StopMove();

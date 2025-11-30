@@ -55,16 +55,16 @@ namespace Game.GameField.Builders.Walls
 
         private void CreateWall(Transform parent, Vector3 position, Vector3 size)
         {
-            var wallGO = new GameObject("Wall");
-            wallGO.transform.SetParent(parent, worldPositionStays: true);
-            wallGO.transform.position = position;
-            wallGO.transform.rotation = Quaternion.identity;
+            var wallCreated = new GameObject("Wall");
+            wallCreated.transform.SetParent(parent, worldPositionStays: true);
+            wallCreated.transform.position = position;
+            wallCreated.transform.rotation = Quaternion.identity;
 
-            var collider = wallGO.AddComponent<BoxCollider>();
-            wallGO.AddComponent<Walls.Wall>();
+            var collider = wallCreated.AddComponent<BoxCollider>();
+            wallCreated.AddComponent<Wall>();
             collider.size = size;
 
-            wallGO.tag = "Wall";
+            wallCreated.tag = "Wall";
         }
     }
 }

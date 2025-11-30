@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Game.Providers
+namespace Game.GameField
 {
     public delegate Vector3 GetRandomPointOnField();
 

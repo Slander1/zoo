@@ -6,7 +6,7 @@ namespace Game.Animals.StatCounters
 {
     public sealed class DiedCounter : IStartable, IDisposable
     {
-        private DiedState _diedState = new();
+        private readonly DiedState _diedState = new();
         private readonly IAnimalsEventHub _eventHub;
         
         public DiedCounter(IAnimalsEventHub eventHub)

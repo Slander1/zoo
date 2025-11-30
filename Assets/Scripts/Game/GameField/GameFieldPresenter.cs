@@ -1,15 +1,13 @@
 using System;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Game.GameField.Builders.Data;
 using Game.GameField.Builders.Walls;
-using Game.Providers;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Game.GameField
 {
-    public sealed class GameFieldPresenter : MonoBehaviour, IRandomPointProvider, IGameFieldCenterProvider
+    public sealed class GameFieldPresenter : MonoBehaviour, IRandomPointProvider
     {
         [SerializeField] private BuildersData buildersData;
 

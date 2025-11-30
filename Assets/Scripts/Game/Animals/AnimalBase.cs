@@ -17,13 +17,13 @@ namespace Game.Animals
         [SerializeField] protected AnimalView view;
         
         protected IMover Mover;
-        protected CollisionDefiner CollisionDefiner;
+        private CollisionDefiner _collisionDefiner;
         
         #region === Unity Events ===
 
         protected virtual void Awake()
         {
-            CollisionDefiner = new CollisionDefiner();
+            _collisionDefiner = new CollisionDefiner();
             
             InitializeMover();
             InitializeCollisionController();
@@ -56,19 +56,17 @@ namespace Game.Animals
             return view.GetObjectHeight();
         }
 
-        public void OnBlockedByObstacle(Vector2 obstacleNormal)
+        protected void OnBlockedByObstacle(Vector2 obstacleNormal)
         {
             Mover.OnBlockedByObstacle(obstacleNormal);
         }
         
         private void OnViewCollisionEnter(Collision collision)
         {
-            CollisionDefiner.OnCollision(this, collision);
-            // CollisionBehaviour.OnCollision(collision);
+            _collisionDefiner.OnCollision(this, collision);
         }
         
         protected abstract void InitializeMover();
-        // protected abstract void InitializeCollisionBehaviour();
 
         public void Die()
         {

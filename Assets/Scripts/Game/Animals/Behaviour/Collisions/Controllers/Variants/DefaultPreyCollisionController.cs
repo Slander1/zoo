@@ -13,7 +13,6 @@ namespace Game.Animals.Behaviour.Collisions.Controllers.Variants
             base.Initialize(dataBase);
             Reacts.Add(typeof(IWall), new RedirectFromWallCollisionBehaviour(Data.RedirectFromWallCollisionBehaviourData));
             Reacts.Add(typeof(IPredator), new PreyCollidedWithPredatorBehaviour());
-            // Reacts.Add();
         }
     }
 }

@@ -1,6 +1,5 @@
 using Game.Animals.Behaviour.Collisions.Controllers;
 using Game.Animals.Behaviour.Collisions.Controllers.Data;
-using Game.Animals.Behaviour.Collisions.Controllers.Variants;
 using Game.Animals.Behaviour.Movers;
 using Game.Animals.Behaviour.Movers.Data;
 using Game.Animals.Roles;

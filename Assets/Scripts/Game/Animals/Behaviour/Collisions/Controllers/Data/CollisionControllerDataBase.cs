@@ -1,5 +1,4 @@
 using System;
-using Game.Animals.Behaviour.Collisions.ReactLogic.PredatorFight;
 using Game.Animals.Behaviour.Collisions.ReactLogic.RedirectFromWall;
 using UnityEngine;
 

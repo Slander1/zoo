@@ -3,7 +3,6 @@ using Game.Animals.Factory;
 using Game.Animals.Pool;
 using Game.Animals.StatCounters;
 using Game.GameField;
-using Game.Providers;
 using Game.UI.UpPanel;
 using VContainer;
 using VContainer.Unity;
@@ -15,16 +14,13 @@ namespace Game
         protected override void Configure(IContainerBuilder builder)
         {
             builder.RegisterComponentInHierarchy<GameFieldPresenter>()
-            .As<GameFieldPresenter>()
-            .As<IRandomPointProvider>()
-            .As<IGameFieldCenterProvider>();
+                .As<GameFieldPresenter>()
+                .As<IRandomPointProvider>();
 
             builder.RegisterComponentInHierarchy<AnimalsFactory>()
                 .As<AnimalsFactory>();
 
             builder.RegisterComponentInHierarchy<UpPanelPresenter>();
-            
-            
             
             builder.Register<AnimalsEventHub>(Lifetime.Scoped)
                 .As<IAnimalsEventHub>();
@@ -32,11 +28,6 @@ namespace Game
             builder.RegisterEntryPoint<DiedCounter>(Lifetime.Scoped);
             builder.RegisterEntryPoint<AnimalsPool>(Lifetime.Scoped)
                 .As<IObjectPoolProvider>();
-        }
-        //
-        protected override void Awake()
-        {
-            base.Awake();
         }
     }
 }

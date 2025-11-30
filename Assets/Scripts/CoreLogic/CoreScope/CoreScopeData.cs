@@ -9,7 +9,7 @@ namespace CoreLogic.CoreScope
     public class CoreScopeData : ScriptableObject
     {
         public ScenesList ScenesList => scenesList;
-        
+    
         [SerializeField] private ScenesList scenesList;
     }
 }

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Game.Animals.EventHub;
-using Game.Providers;
 using UnityEngine;
 using VContainer.Unity;
 using Random = UnityEngine.Random;

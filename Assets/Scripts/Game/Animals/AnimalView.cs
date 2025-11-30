@@ -25,12 +25,13 @@ namespace Game.Animals
         }
 
         #endregion === Unity Events ===
-        public virtual float GetObjectHeight()
+        
+        public float GetObjectHeight()
         {
             return bodyCollider.bounds.size.y;
         }
 
-        public virtual void ChangeVelocity(Vector3 velocity)
+        public void ChangeVelocity(Vector3 velocity)
         {
             rb.linearVelocity = velocity;
         }

@@ -1,5 +1,4 @@
 using CoreLogic.Scenes.Scene;
-using VContainer;
 
 namespace CoreLogic.Bootstrap
 {
@@ -9,12 +8,12 @@ namespace CoreLogic.Bootstrap
 
         private void Start()
         {
-            CallSceneCoordinator();
+            LoadStartScene();
         }        
 
         #endregion  === Unity Events ===
         
-        private void CallSceneCoordinator()
+        private void LoadStartScene()
         {
             SceneCoordinator.LoadStartScene();
         }

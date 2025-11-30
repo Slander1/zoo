@@ -6,7 +6,7 @@ namespace CoreLogic.Scenes.Data
     public sealed class ScenesList : ScriptableObject
     {
         public string[] Scenes => sceneNames;
-
+    
         [SerializeField] private string[] sceneNames;
     }
 }

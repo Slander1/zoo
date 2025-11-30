@@ -13,10 +13,10 @@ namespace Game.GameField.Builders.Data
 
         [Header("Padding from screen edges (%)")]
         [Range(0f, 40f)]
-        [SerializeField] private float paddingPercentX = 0f;
+        [SerializeField] private float paddingPercentX = 10f;
 
         [Range(0f, 40f)]
-        [SerializeField] private float paddingPercentY = 0f;
+        [SerializeField] private float paddingPercentY = 5f;
 
         public float BaseMeshSize => baseMeshSize;
         public GameFieldView GameFieldPrefab => gameFieldPrefab;

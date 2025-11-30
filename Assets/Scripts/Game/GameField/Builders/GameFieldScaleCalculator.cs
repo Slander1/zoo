@@ -38,7 +38,7 @@ namespace Game.GameField.Builders
                 finalWidth  / _buildersData.BaseMeshSize,
                 1,
                 finalHeight / _buildersData.BaseMeshSize
-            );;
+            );
         }
     }
 }

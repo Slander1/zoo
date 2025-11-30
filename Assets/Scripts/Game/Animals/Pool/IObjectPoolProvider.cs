@@ -1,6 +1,4 @@
-using Game.Animals;
-
-namespace Game.Providers
+namespace Game.Animals.Pool
 {
     public interface IObjectPoolProvider
     {

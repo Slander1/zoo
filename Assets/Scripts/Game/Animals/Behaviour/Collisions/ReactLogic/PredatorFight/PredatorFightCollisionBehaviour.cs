@@ -11,7 +11,10 @@ namespace Game.Animals.Behaviour.Collisions.ReactLogic.PredatorFight
             if (reactTo is not IPredator attackedPredator || reactFrom is not IPredator attackingPredator)
                 throw new System.Exception("PredatorFightCollisionBehaviour reactTo or reactFrom is not IPredator");
 
-            if (attackedPredator.Force > attackingPredator.Force) attackedPredator.Die();
+            if (attackedPredator.Force > attackingPredator.Force)
+                attackedPredator.Die();
+            else
+                attackingPredator.Eat();
         }
     }
 }

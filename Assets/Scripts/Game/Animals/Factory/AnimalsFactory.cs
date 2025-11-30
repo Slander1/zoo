@@ -3,7 +3,8 @@ using System.Threading;
 using CoreLogic.Utility;
 using Cysharp.Threading.Tasks;
 using Game.Animals.EventHub;
-using Game.Providers;
+using Game.Animals.Pool;
+using Game.GameField;
 using UnityEngine;
 using VContainer;
 using Random = UnityEngine.Random;
@@ -65,20 +66,16 @@ namespace Game.Animals.Factory
 
         private void CreateRandomAnimal()
         {
-            AnimalBase createdAnimal;
-            
             var pos = _getRandomPointOnField.Invoke();
             
-            if (_objectPoolProvider.TryGetElemFromObjectPool(out createdAnimal))
+            if (_objectPoolProvider.TryGetElemFromObjectPool(out var createdAnimal))
             {
-                // pos += new Vector3(0f, createdAnimal.GetObjectHeight(), 0f);
                 createdAnimal.transform.SetParent(animalParent);
             }
             else
             {
                 var randomAnimalIndex = Random.Range(0, animals.Length);
                 var animalPrefab = animals[randomAnimalIndex];
-                // pos += new Vector3(0f, animalPrefab.GetObjectHeight(), 0f);
                 createdAnimal = Instantiate(animalPrefab, pos, Quaternion.identity, animalParent);
             }
             

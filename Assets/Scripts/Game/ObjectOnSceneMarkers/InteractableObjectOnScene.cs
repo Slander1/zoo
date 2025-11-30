@@ -4,6 +4,6 @@ namespace Game.ObjectOnSceneMarkers
 {
     public class InteractableObjectOnScene : MonoBehaviour, IInteractableObjectOnScene
     {
-        public Transform Transform => this.transform;
+        public Transform Transform => transform;
     }
 }

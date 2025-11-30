@@ -11,7 +11,7 @@ namespace Game.Animals.Behaviour.Collisions.ReactLogic.PredatorEatPrey
             if (reactFrom is not IPredator attackingPredator || reactTo is not IPray pray)
                 throw new System.Exception("PredatorFightCollisionBehaviour reactTo or reactFrom is not IPredator");
             
-            attackingPredator.Eat(pray);
+            attackingPredator.Eat();
         }
     }
 }

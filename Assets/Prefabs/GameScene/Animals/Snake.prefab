@@ -130,11 +130,10 @@ MonoBehaviour:
   view: {fileID: 1962919892242925943}
   moverData:
     moveSpeed: 2
-    rotationSpeed: 15
   collisionData:
     redirectFromWallCollisionBehaviourData:
       wallRedirectAngleThreshold: 180
-  predatorView: {fileID: 5033487207607475441}
+  predatorTastyView: {fileID: 5033487207607475441}
 --- !u!65 &2985073264137911801
 BoxCollider:
   m_ObjectHideFlags: 0

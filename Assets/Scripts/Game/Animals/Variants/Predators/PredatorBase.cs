@@ -15,7 +15,7 @@ namespace Game.Animals.Variants.Predators
         where TCollisionController : IGenericICollisionController<TCollisionData>, new()
         where TCollisionData : ICollisionControllerData
     {
-        [SerializeField] public PredatorView predatorView;
+        [SerializeField] public PredatorTastyView predatorTastyView;
         
         public int Force { get; protected set; }
 
@@ -36,7 +36,7 @@ namespace Game.Animals.Variants.Predators
 
         public void Eat()
         {
-            predatorView.ShowForSecondsAsync();
+            predatorTastyView.ShowForSecondsAsync();
         }
     }
 }
